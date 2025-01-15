@@ -36,6 +36,7 @@ $(PREFIX) $(BUILD):
 	mkdir -p $@
 
 $(SQLITE_SRC):
+	@echo $(shell pwd)
 	curl -L http://sqlite.org/$(SQLITE_RELEASE_YEAR)/sqlite-amalgamation-$(SQLITE_VERSION).zip --output src.zip
 	unzip src.zip
 	mv sqlite-amalgamation-$(SQLITE_VERSION)/* src
