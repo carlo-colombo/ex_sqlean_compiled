@@ -21,6 +21,7 @@ PREFIX = $(MIX_APP_PATH)/priv
 SQLITE_SRC = src/sqlite3ext.h
 
 all: regexp math
+	@echo $(shell pwd)
 
 regexp: $(PREFIX) $(PREFIX)/regexp.so
 math: $(PREFIX) $(PREFIX)/math.so

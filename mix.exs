@@ -11,6 +11,7 @@ defmodule ExSqleanCompiled.MixProject do
       make_cwd: "sqlean_src",
       make_makefile: "../Makefile",
       make_targets: ["all"],
+      make_clean: ["clean"],
       compilers:  Mix.compilers() ++ [:elixir_make],
       # aliases: ["deps.precompile": ["echo"]]
     ]
