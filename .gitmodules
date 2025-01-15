@@ -1,0 +1,3 @@
+[submodule "sqlean_src"]
+	path = sqlean_src
+	url = git@github.com:nalgeon/sqlean.git
