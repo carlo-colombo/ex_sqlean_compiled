@@ -12,7 +12,7 @@ defmodule ExSqleanCompiled.MixProject do
       make_makefile: "../Makefile",
       make_targets: ["all"],
       make_clean: ["clean"],
-      compilers:  Mix.compilers() ++ [:elixir_make],
+      compilers:  Mix.compilers() ++ [:sqlean],
       # aliases: ["deps.precompile": ["echo"]]
     ]
   end

@@ -9,7 +9,7 @@ SQLITE_BRANCH := 3.36
 
 SQLEAN_VERSION := '"$(or $(shell git tag --points-at HEAD),main)"'
 
-LINIX_FLAGS := -z now -z relro -Wall -Wsign-compare -Wno-unknown-pragmas -fPIC -shared -Isrc -DSQLEAN_VERSION=$(SQLEAN_VERSION)
+LINUX_FLAGS := -z now -z relro -Wall -Wsign-compare -Wno-unknown-pragmas -fPIC -shared -Isrc -DSQLEAN_VERSION=$(SQLEAN_VERSION)
 WINDO_FLAGS := -shared -Isrc -DSQLEAN_VERSION=$(SQLEAN_VERSION)
 WIN32_FLAGS := $(WINDO_FLAGS) -DSQLEAN_OMIT_UUID7
 MACOS_FLAGS := -Wall -Wsign-compare -fPIC -dynamiclib -Isrc -DSQLEAN_VERSION=$(SQLEAN_VERSION)
@@ -20,25 +20,30 @@ KERNEL_NAME := $(shell uname -s)
 PREFIX = $(MIX_APP_PATH)/priv
 SQLITE_SRC = src/sqlite3ext.h
 
+FLAGS = 
+
+ifeq ($(KERNEL_NAME), Linux)
+	FLAGS += $(LINUX_FLAGS)
+endif
+ifeq ($(KERNEL_NAME), Darwin)
+	FLAGS += $(MACOS_FLAGS)
+endif
+
 all: regexp math
-	@echo $(shell pwd)
 
 regexp: $(PREFIX) $(PREFIX)/regexp.so
 math: $(PREFIX) $(PREFIX)/math.so
 
 $(PREFIX)/regexp.so: $(SQLITE_SRC) src/regexp/constants.h src/sqlite3-regexp.c src/regexp/*.c src/regexp/pcre2/*.c 
-	$(CC) -O3 $(MACOS_FLAGS) -include src/regexp/constants.h src/sqlite3-regexp.c src/regexp/*.c src/regexp/pcre2/*.c -o $@
+	$(CC) -O3 $(FLAGS) -include src/regexp/constants.h src/sqlite3-regexp.c src/regexp/*.c src/regexp/pcre2/*.c -o $@
 
 $(PREFIX)/math.so: $(SQLITE_SRC) src/sqlite3-math.c src/math/*.c 
-	$(CC) -O3 $(MACOS_FLAGS) -include src/sqlite3-math.c src/math/*.c  -o $@
+	$(CC) -O3 $(FLAGS) -include src/sqlite3-math.c src/math/*.c  -o $@
 
 $(PREFIX) $(BUILD):
 	mkdir -p $@
 
 $(SQLITE_SRC):
-	@echo "=============="
-	@echo $(shell pwd)
-	@echo "=============="
 	curl -L http://sqlite.org/$(SQLITE_RELEASE_YEAR)/sqlite-amalgamation-$(SQLITE_VERSION).zip --output src.zip
 	unzip src.zip
 	mv sqlite-amalgamation-$(SQLITE_VERSION)/* src

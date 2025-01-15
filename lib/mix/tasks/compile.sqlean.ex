@@ -7,9 +7,6 @@ defmodule Mix.Tasks.Compile.Sqlean do
   @impl Mix.Task
   def run(_args) do
     Mix.Project.config()
-    |> Keyword.put(:make_cwd, "./sqlean_src")
-    |> Keyword.put(:make_makefile, "../Makefile")
-    |> Keyword.put(:make_targets, ["all"])
     |> ElixirMake.Compiler.make([])
   end
 
@@ -17,7 +14,6 @@ defmodule Mix.Tasks.Compile.Sqlean do
     Mix.shell().info("cleaning")
 
     Mix.Project.config()
-    |> Keyword.put(:make_cwd, Path.join(:code.priv_dir(:ex_sqlean_compiled), "sqlean_src"))
     |> Keyword.put(:make_targets, ["clean"])
     |> ElixirMake.Compiler.make([])
   end
