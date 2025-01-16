@@ -33,4 +33,26 @@ defmodule ExSqleanCompiled.MixProject do
       # {:dep_from_git, git: "https://github.com/elixir-lang/my_dep.git", tag: "0.1.0"}
     ]
   end
+
+  defp package do
+    [
+      files: ~w(
+        lib
+        .formatter.exs
+        mix.exs
+        README.md
+        LICENSE
+        .clang-format
+        c_src
+        Makefile*
+        checksum.exs
+      ),
+      name: "exqlite",
+      licenses: ["MIT"],
+      links: %{
+        "GitHub" => "https://github.com/elixir-sqlite/exqlite",
+        "Changelog" => "https://github.com/elixir-sqlite/exqlite/blob/main/CHANGELOG.md"
+      }
+    ]
+  end
 end
